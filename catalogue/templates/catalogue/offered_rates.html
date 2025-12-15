@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+ product list
+{% endblock %}
+
+{% block content %} 
+
+<h1 class="text-center font-sans font-semibold text-4xl text-black mt-10">
+    Product list
+</h1>
+
+<div class="flex justify-center mt-10 px-4 ">
+    {% if rate %}
+        <div class="max-w-4xl w-full overflow-auto border rounded-lg shadow-md p-2">
+            <img src="{{ rate.image.url }}" 
+                 alt="Offered Rates"
+                 class="w-full h-auto cursor-zoom-in transition-transform duration-300 hover:scale-125">
+        </div>
+    {% else %}
+        <p class="text-gray-500 text-center">No product list available.</p>
+    {% endif %}
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+
+
+{% block content %} 
+
+<!-- Search Bar with Autocomplete -->
+<div class="flex justify-center my-12 m-4 ">
+    <div class="relative w-full max-w-lg">
+        <form action="{% url 'home' %}" method="get" class="flex w-full border border-gray-300 rounded-lg overflow-hidden shadow-sm">
+            <input
+                type="search"
+                name="q"
+                id="search-input"
+                placeholder="Search medicine"
+                autocomplete="off"
+                class="flex-1 py-2 px-4 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+                type="submit"
+                class="bg-black hover:bg-zinc-800 text-white px-4 py-2 font-semibold"
+            >
+                Search
+            </button>
+        </form>
+        <!-- Autocomplete dropdown -->
+        <div id="autocomplete-results" class="absolute left-0 right-0 bg-white border border-gray-300 rounded mt-1 z-10 max-h-60 overflow-y-auto shadow-lg text-black"></div>
+    </div>
+</div>
+
+<script>
+const input = document.getElementById('search-input');
+const resultsContainer = document.getElementById('autocomplete-results');
+
+input.addEventListener('input', async () => {
+    const query = input.value.trim();
+    if (!query) {
+        resultsContainer.innerHTML = '';
+        return;
+    }
+
+    const res = await fetch(`/autocomplete/?term=${encodeURIComponent(query)}`);
+    const suggestions = await res.json();
+
+    resultsContainer.innerHTML = suggestions.map(item => `
+        <div class="px-4 py-2 hover:bg-gray-200 cursor-pointer" onclick="goToDetail(${item.id})">
+            ${item.name}
+        </div>
+    `).join('');
+});
+
+function goToDetail(pk) {
+    window.location.href = `/detail/${pk}/`;  // redirect to detail page
+}
+</script>
+
+
+
+
+<div class="flex justify-center"> 
+<a href="{% url 'offered_rates' %}"
+   class="bg-zinc-400 text-black px-3 py-2 rounded-lg hover:opacity-90 transition inline-block">
+   Click to view Product list
+</a>
+</div>
+ 
+
+<!-- Medicines Grid -->
+<div class="grid grid-cols-2 p-5 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    {% for med in medicine %}
+    <div class="border border-gray-300 shadow-lg shadow-gray-300/50 rounded-xl p-2 bg-white hover:scale-[1.01] hover:shadow-xl transition">
+
+       
+         <!-- SQUARE IMAGE ON MOBILE -->
+<div class="aspect-square w-full mb-4 overflow-hidden rounded">
+    {% if med.image %}
+        <img src="{{ med.image.url }}"
+             alt="{{ med.name }}"
+             class="w-full h-full object-cover rounded">
+    {% else %}
+        <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-700 text-sm rounded">
+            No Picture
+        </div>
+    {% endif %}
+</div>
+
+  
+
+        <h2 class="text-lg font-semibold mb-1 text-black">{{ med.name }}</h2>
+        <p class="text-gray-700 text-sm mb-1">Formulation: {{ med.formulation }}</p>
+        <p class="text-gray-800 font-bold mb-3">MRP: Rs.{{ med.MRP }}</p>
+
+        <a href="{% url 'detail' med.pk %}"
+           class="inline-block bg-black text-white px-4 py-1 rounded hover:bg-gray-800 text-sm">
+           View Details
+        </a>
+
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

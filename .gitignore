@@ -1,0 +1,28 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+env/
+venv/
+*.env
+
+# Django staticfiles collected folder (ignore collected CSS/JS)
+staticfiles/
+
+# Node / Tailwind local files
+node_modules/
+theme/static_src/node_modules/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# IDE / Editor files
+.vscode/
+.idea/

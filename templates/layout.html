@@ -1,0 +1,108 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en" class="bg-white">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Zaaim Health Pharma Medicine Catalogue{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+   
+    <link 
+  rel="stylesheet" 
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" 
+  integrity="sha512-..." 
+  crossorigin="anonymous" 
+  referrerpolicy="no-referrer" 
+/>
+    {% tailwind_css %}
+    
+</head>
+<body>
+    
+{% comment %} navbar is not inside block content bec its global(appears on whole website)  {% endcomment %}
+<nav class="bg-black shadow-md relative flex-wrap">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="/" class="text-xl font-semibold text-white">
+            Zaaim Health Pharma
+        </a>
+
+        <!-- Hamburger/X Button -->
+        <button id="menu-btn" class="sm:hidden text-white focus:outline-none relative w-7 h-7">
+            <!-- Line 1 -->
+            <span class="hamburger-line absolute top-2 left-0 w-full h-0.5 bg-white transition-all duration-300"></span>
+
+            <!-- Line 2 -->
+            <span class="hamburger-line absolute top-3.5 left-0 w-full h-0.5 bg-white transition-all duration-300"></span>
+
+            <!-- Line 3 -->
+            <span class="hamburger-line absolute top-5 left-0 w-full h-0.5 bg-white transition-all duration-300"></span>
+        </button>
+
+        <!-- Desktop Links -->
+        <div class="hidden sm:flex space-x-6">
+            <a href="/" class="hover:text-blue-300 text-white no-underline hover:underline">Home</a>
+            <a href="/contact/" class="hover:text-blue-300 text-white no-underline hover:underline">Contact</a>
+        </div>
+    </div>
+
+    <!-- Floating Animated Dropdown -->
+    <div id="mobile-menu"
+        class=" z-50 absolute right-4 top-full mt-2 w-40 bg-black shadow-lg rounded-lg py-3 sm:hidden
+               opacity-0 scale-95 translate-y-2 pointer-events-none
+               transition-all duration-200 ease-out">
+
+        <a href="/" class="block px-4 py-2 text-white hover:bg-gray-800">Home</a>
+        <a href="/contact/" class="block px-4 py-2 text-white hover:bg-gray-800">Contact</a>
+    </div>
+</nav>
+
+<script>
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    const lines = btn.querySelectorAll('.hamburger-line');
+
+    btn.addEventListener('click', () => {
+        // Toggle dropdown animation
+        menu.classList.toggle('opacity-0');
+        menu.classList.toggle('scale-95');
+        menu.classList.toggle('translate-y-2');
+        menu.classList.toggle('pointer-events-none');
+
+        // Toggle hamburger → X
+        btn.classList.toggle('open');
+
+        if (btn.classList.contains('open')) {
+            // Turn into X
+            lines[0].style.transform = 'translateY(6px) rotate(45deg)';
+            lines[1].style.opacity = '0';
+            lines[2].style.transform = 'translateY(-6px) rotate(-45deg)';
+        } else {
+            // Back to hamburger
+            lines[0].style.transform = 'translateY(0) rotate(0)';
+            lines[1].style.opacity = '1';
+            lines[2].style.transform = 'translateY(0) rotate(0)';
+        }
+    });
+</script>
+
+
+
+
+
+    
+<main class="min-h-screen bg-white">
+    {% block content %}
+    <h1>hh</h1>
+    {% endblock %}
+</main>
+   
+       <footer class="bg-black text-white text-center py-1 mt-10">
+        <p class="text-sm">&copy; Zaaim Health Pharma. All rights reserved.</p>
+    </footer>
+
+    
+</body>
+</html>
